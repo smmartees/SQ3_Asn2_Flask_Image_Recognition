@@ -41,3 +41,26 @@ def test_acceptance_valid_large_image(client, valid_image):
     assert response.status_code == 200
     assert b"File cannot be processed." not in response.data
     assert b"Prediction" in response.data
+
+
+def test_acceptance_grayscale_upload(client):
+    """Verify that a grayscale image can be uploaded and processed."""
+
+    # ARRANGE
+    grayscale_image = Image.new("L", (224, 224), color=128)
+
+    image_data = BytesIO()
+    grayscale_image.save(image_data, format="PNG")
+    image_data.seek(0)
+
+    # ACT
+    response = client.post(
+        "/prediction",
+        data={"file": (image_data, "grayscale.png")},
+        content_type="multipart/form-data"
+    )
+
+    # ASSERT
+    assert response.status_code == 200
+    assert b"File cannot be processed." not in response.data
+    assert b"Prediction" in response.data

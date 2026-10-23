@@ -1,6 +1,8 @@
 
 """Unit and model-level tests for image preprocessing and prediction."""
 
+from io import BytesIO
+from PIL import Image
 import numpy as np
 import pytest
 
@@ -63,3 +65,21 @@ def test_model_predictions_consistency():
         prediction == predictions[0]
         for prediction in predictions
     )
+
+def test_preprocess_grayscale_image():
+    """Verify that grayscale images are converted to RGB input."""
+
+    # ARRANGE
+    grayscale_image = Image.new("L", (224, 224), color=128)
+
+    image_data = BytesIO()
+    grayscale_image.save(image_data, format="PNG")
+    image_data.seek(0)
+
+    # ACT
+    processed_image = preprocess_img(image_data)
+
+    # ASSERT
+    assert processed_image.shape == (1, 224, 224, 3)
+    assert np.min(processed_image) >= 0
+    assert np.max(processed_image) <= 1
