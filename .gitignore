@@ -14,3 +14,6 @@ htmlcov/
 # Local editor settings
 .vscode/
 .idea/
+
+# coverage files
+coverage.xml
