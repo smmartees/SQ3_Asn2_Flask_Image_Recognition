@@ -35,6 +35,7 @@ jobs:
           python -m pytest -q --cov=app --cov=model --cov-report=xml:coverage.xml
 
       - name: SonarQube Cloud scan
-        uses: SonarSource/sonarqube-scan-action@589ac766e96173583a54566225079a51ba77a775  #v6
+        run: echo "Called workflow SHA is ${{ job.workflow_sha }}"
+        # uses: SonarSource/sonarqube-scan-action@589ac766e96173583a54566225079a51ba77a775  #v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
