@@ -1,6 +1,7 @@
 # Importing required libs
 """Flask application for image recognition and prediction."""
 from flask import Flask, render_template, request
+from flask_wtf import CSRFProtect
 from PIL import UnidentifiedImageError
 from werkzeug.exceptions import BadRequestKeyError
 
@@ -8,7 +9,7 @@ from model import preprocess_img, predict_result
 
 # Instantiating flask app
 app = Flask(__name__)
-
+csrf = CSRFProtect(app) # enables CSRF protection
 
 # Home route
 @app.route("/")
