@@ -7,8 +7,24 @@ from app import app  # This imports the Flask app for testing
 
 @pytest.fixture
 def client():
-    with app.test_client() as client:
-        yield client
+    original = app.config["WTF_CSRF_ENABLED"]
+    app.config["WTF_CSRF_ENABLED"] = False
+
+    with app.test_client() as test_client:
+        yield test_client
+
+    app.config["WTF_CSRF_ENABLED"] = original
+
+
+@pytest.fixture
+def validClient():
+    original = app.config["WTF_CSRF_ENABLED"]
+    app.config["WTF_CSRF_ENABLED"] = True
+
+    with app.test_client() as valid_client:
+        yield valid_client
+
+    app.config["WTF_CSRF_ENABLED"] = original
 
 @pytest.fixture
 def valid_image():
