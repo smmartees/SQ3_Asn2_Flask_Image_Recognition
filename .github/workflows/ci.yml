@@ -33,3 +33,5 @@ jobs:
 
       - name: Run pytest
         run: python -m pytest -q
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
